@@ -30,9 +30,6 @@ public class User {
     @Column(name = "signo", nullable = false)
     private Signo signo;
 
-    @Column(name = "data_hoje", nullable = false)
-    private LocalDateTime dataHoje = LocalDateTime.now();
-
     @PrePersist
     @PreUpdate
     public void calcularSigno() {
