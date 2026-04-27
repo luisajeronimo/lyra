@@ -6,27 +6,37 @@ import com.lyra_tarot.lyra.model.User;
 
 import java.time.format.DateTimeFormatter;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
+import org.springframework.retry.annotation.Recover;
 
 import com.google.genai.Client;
 
 @Service
 public class InterpretationService implements IInterpretationService {
 
+    @Autowired
+    private Client geminiClient;
+
+    @Value("${lyra.gemini.model}")
+    private String geminiModel;
+
+    @Value("${lyra.gemini.prompt}")
+    private String promptTemplate;
+
     @Override
+    @Retryable(
+        retryFor = { Exception.class },
+        maxAttemptsExpression = "${lyra.gemini.retry.maxAttempts}",
+        backoff = @Backoff(delayExpression = "${lyra.gemini.retry.delay}")
+    )
     public String interpretarCartaDoDia(User user, TarotCard carta) {
-        Client client = new Client();
-
-
         // Prompt Engineering
         String prompt = String.format(
-            "Você é o Oráculo Lyra, uma IA mística especialista em Tarot e Astrologia. " +
-            "Realize uma leitura personalizada para o(a) consulente %s, que é do signo de %s. " +
-            "A data de hoje é %s. Considere os trânsitos planetários atuais para este dia (ex: posição do Sol, Lua e planetas regentes). " +
-            "A carta sorteada foi: '%s' (Arcano %s, Elemento %s, Número %d). " +
-            "Significado base: %s. " +
-            "Instrução: Conecte a energia da carta com a personalidade do signo de %s e as influências do céu de hoje. " +
-            "Seja profundo, poético e traga um conselho prático ao final.",
+            promptTemplate,
             user.getNome(), 
             user.getSigno(), 
             user.getDataHoje().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")), 
@@ -38,12 +48,13 @@ public class InterpretationService implements IInterpretationService {
             user.getSigno()
         );
 
-        try {
-            // Chamada para o modelo Gemini
-            GenerateContentResponse response = client.models.generateContent("gemini-2.5-flash", prompt, null);
-            return response.text();
-        } catch (Exception e) {
-            return "Ocorreu uma interferência nas energias astrais... (Erro: " + e.getMessage() + ")";
-        }
+        // Chamada para o modelo Gemini! (No manual loop - Spring handles retries)
+        GenerateContentResponse response = geminiClient.models.generateContent(geminiModel, prompt, null);
+        return response.text();
+    }
+
+    @Recover
+    public String recover(Exception e, User user, TarotCard carta) {
+        return "Ocorreu uma interferência nas energias astrais... (Timeout/Erro final: " + e.getMessage() + ")";
     }
 }
