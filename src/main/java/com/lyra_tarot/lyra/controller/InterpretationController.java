@@ -2,7 +2,7 @@ package com.lyra_tarot.lyra.controller;
 
 import com.lyra_tarot.lyra.model.TarotCard;
 import com.lyra_tarot.lyra.model.User;
-import com.lyra_tarot.lyra.repository.UserRepository;
+import com.lyra_tarot.lyra.service.IUserService;
 import com.lyra_tarot.lyra.service.IInterpretationService;
 import com.lyra_tarot.lyra.service.ITarotService;
 
@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 public class InterpretationController {
 
     @Autowired
-    private UserRepository userRepository;
+    private IUserService userService;
 
     @Autowired
     private ITarotService tarotService;
@@ -36,7 +36,7 @@ public class InterpretationController {
     })
     public ResponseEntity<String> realizarConsulta(@Valid @RequestBody User user) {
 
-        User usuarioSalvo = userRepository.save(user);
+        User usuarioSalvo = userService.salvarUsuario(user);
 
         TarotCard cartaSorteada = tarotService.sortearCarta();
 
