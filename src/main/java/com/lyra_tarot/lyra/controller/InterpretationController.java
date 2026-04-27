@@ -5,6 +5,7 @@ import com.lyra_tarot.lyra.model.User;
 import com.lyra_tarot.lyra.service.IUserService;
 import com.lyra_tarot.lyra.service.IInterpretationService;
 import com.lyra_tarot.lyra.service.ITarotService;
+import com.lyra_tarot.lyra.service.ILeituraTarotService;
 
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -29,6 +30,9 @@ public class InterpretationController {
     @Autowired
     private IInterpretationService interpretationService;
 
+    @Autowired
+    private ILeituraTarotService leituraTarotService;
+
     @PostMapping("/informarDados")
         @ApiResponses({
         @ApiResponse(responseCode = "201", description = "Dados informados com sucesso"),
@@ -41,6 +45,8 @@ public class InterpretationController {
         TarotCard cartaSorteada = tarotService.sortearCarta();
 
         String leituraFinal = interpretationService.interpretarCartaDoDia(usuarioSalvo, cartaSorteada);
+
+        leituraTarotService.salvarLeitura(usuarioSalvo, cartaSorteada, leituraFinal);
 
         return ResponseEntity.status(201).body(leituraFinal);
     }

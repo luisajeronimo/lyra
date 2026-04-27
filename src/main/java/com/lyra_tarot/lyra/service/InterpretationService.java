@@ -13,6 +13,8 @@ import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.retry.annotation.Recover;
 
+import java.time.LocalDateTime;
+
 import com.google.genai.Client;
 
 @Service
@@ -39,7 +41,7 @@ public class InterpretationService implements IInterpretationService {
             promptTemplate,
             user.getNome(), 
             user.getSigno(), 
-            user.getDataHoje().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")), 
+            LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")), 
             carta.getNome(), 
             carta.getArcano(), 
             carta.getElemento(), 
@@ -48,7 +50,7 @@ public class InterpretationService implements IInterpretationService {
             user.getSigno()
         );
 
-        // Chamada para o modelo Gemini! (No manual loop - Spring handles retries)
+        // Chamada para o modelo Gemini 
         GenerateContentResponse response = geminiClient.models.generateContent(geminiModel, prompt, null);
         return response.text();
     }
