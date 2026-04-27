@@ -1,0 +1,25 @@
+DELETE FROM tb_cartas;
+
+INSERT INTO tb_cartas (nome, numero, elemento, imagem_url, arcano, significado_geral) VALUES 
+('O Louco', 0, 'Ar', '-', 'MAIOR', 'Novos começos, otimismo, liberdade e saltos de fé.'),
+('O Mago', 1, 'Ar', '-', 'MAIOR', 'Manifestação, recursos, poder pessoal e ação consciente.'),
+('A Sacerdotisa', 2, 'Água', '-', 'MAIOR', 'Intuição, mistério, subconsciente e sabedoria passiva.'),
+('A Imperatriz', 3, 'Terra', '-', 'MAIOR', 'Feminilidade, fertilidade, natureza e abundância.'),
+('O Imperador', 4, 'Fogo', '-', 'MAIOR', 'Autoridade, estrutura, estabilidade e proteção.'),
+('O Hierofante', 5, 'Terra', '-', 'MAIOR', 'Tradição, conformidade, mentoria e valores espirituais.'),
+('Os Enamorados', 6, 'Ar', '-', 'MAIOR', 'Amor, harmonia, relacionamentos e escolhas difíceis.'),
+('O Carro', 7, 'Água', '-', 'MAIOR', 'Controle, força de vontade, vitória e determinação.'),
+('A Força', 8, 'Fogo', '-', 'MAIOR', 'Coragem, influência suave, compaixão e força interior.'),
+('O Eremita', 9, 'Terra', '-', 'MAIOR', 'Introspecção, busca pela verdade, solidão e orientação interna.'),
+('A Roda da Fortuna', 10, 'Fogo', '-', 'MAIOR', 'Mudança, ciclos, destino, sorte e reviravoltas.'),
+('A Justiça', 11, 'Ar', '-', 'MAIOR', 'Equilíbrio, justiça, verdade e causa e efeito.'),
+('O Pendurado', 12, 'Água', '-', 'MAIOR', 'Pausa, rendição, novas perspectivas e sacrifício.'),
+('A Morte', 13, 'Água', '-', 'MAIOR', 'Fim de um ciclo, transformação profunda e transição.'),
+('A Temperança', 14, 'Fogo', '-', 'MAIOR', 'Equilíbrio, moderação, paciência e propósito.'),
+('O Diabo', 15, 'Terra', '-', 'MAIOR', 'Sombra, apego, vício, sexualidade e materialismo.'),
+('A Torre', 16, 'Fogo', '-', 'MAIOR', 'Mudança súbita, desastre, revelação e libertação.'),
+('A Estrela', 17, 'Ar', '-', 'MAIOR', 'Esperança, fé, renovação e espiritualidade.'),
+('A Lua', 18, 'Água', '-', 'MAIOR', 'Ilusão, medo, ansiedade e intuição aguçada.'),
+('O Sol', 19, 'Fogo', '-', 'MAIOR', 'Positividade, diversão, calor, sucesso e vitalidade.'),
+('O Julgamento', 20, 'Fogo', '-', 'MAIOR', 'Renascimento, chamado interno e perdão.'),
+('O Mundo', 21, 'Terra', '-', 'MAIOR', 'Conclusão, integração, realização e viagem.');
