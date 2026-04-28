@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin(origins = "http://localhost:5173") // URL padrão do Vite/React
 @RestController
 @RequestMapping("/api/interpretacao")
 @Tag(name = "Interpretação da Carta Tarot do dia", description = "Interpretação personalizada da carta de Tarot sorteada para o dia, baseada no signo do usuário")
