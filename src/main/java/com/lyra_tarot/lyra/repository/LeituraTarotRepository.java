@@ -5,4 +5,4 @@ import com.lyra_tarot.lyra.model.LeituraTarot;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 @Repository
-public interface LeiturarTarotRepository extends JpaRepository<LeituraTarot, Long> {}
+public interface LeituraTarotRepository extends JpaRepository<LeituraTarot, Long> {}
