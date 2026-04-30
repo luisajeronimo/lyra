@@ -30,7 +30,7 @@ public class SecurityConfigurations {
                 .requestMatchers(HttpMethod.POST, "/auth/login").permitAll() // Login é liberado
                 .requestMatchers(HttpMethod.POST, "/auth/register").permitAll() // Cadastro é liberado
                 .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
-                .requestMatchers(HttpMethod.POST, "/api/interpretacao/**").hasRole("USER")
+                .requestMatchers(HttpMethod.POST, "/api/interpretacao/**").hasAnyRole("ADMIN", "USER")
                 .anyRequest().authenticated() // O resto tudo exige login
             )
             .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

@@ -4,6 +4,7 @@ import com.lyra_tarot.lyra.model.User;
 import com.lyra_tarot.lyra.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.security.core.userdetails.UserDetails;
 import java.time.LocalDate;
 
 @Service
@@ -18,5 +19,10 @@ public class UserService implements IUserService {
             throw new IllegalArgumentException("Ano de nascimento inválido.");
         }
         return repository.save(user);
+    }
+
+    @Override
+    public UserDetails findByEmail(String email) {
+        return repository.findByEmail(email);
     }
 }

@@ -1,4 +1,4 @@
-package com.lyra_tarot.lyra.config.ai;
+package com.lyra_tarot.lyra.config.utils;
 
 import com.google.genai.Client;
 import org.springframework.context.annotation.Bean;

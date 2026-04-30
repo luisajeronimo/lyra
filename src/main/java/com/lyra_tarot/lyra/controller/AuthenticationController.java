@@ -1,6 +1,6 @@
 package com.lyra_tarot.lyra.controller;
 
-import com.lyra_tarot.lyra.service.UserService;
+import com.lyra_tarot.lyra.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.lyra_tarot.lyra.dto.AuthenticationDTO;
 import com.lyra_tarot.lyra.dto.LoginResponseDTO;
 import com.lyra_tarot.lyra.dto.RegisterDTO;
-import com.lyra_tarot.lyra.repository.UserRepository;
 import com.lyra_tarot.lyra.config.security.TokenService;
 import jakarta.validation.Valid;
 import com.lyra_tarot.lyra.model.User;
@@ -22,18 +21,15 @@ import com.lyra_tarot.lyra.model.User;
 @RequestMapping("auth")
 public class AuthenticationController {
 
-    private final UserService userService;
+    private final IUserService userService;
 
     @Autowired
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
     private TokenService tokenService;
 
-    AuthenticationController(UserService userService) {
+    AuthenticationController(IUserService userService) {
         this.userService = userService;
     }
 
@@ -47,7 +43,7 @@ public class AuthenticationController {
 
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody @Valid RegisterDTO data) {
-        if (this.userRepository.findByEmail(data.email()) != null) return ResponseEntity.badRequest().build();
+        if (this.userService.findByEmail(data.email()) != null) return ResponseEntity.badRequest().build();
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.senha());
         User newUser = new User(
             null, 
