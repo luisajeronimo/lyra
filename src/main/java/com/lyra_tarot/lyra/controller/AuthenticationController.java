@@ -1,5 +1,6 @@
 package com.lyra_tarot.lyra.controller;
 
+import com.lyra_tarot.lyra.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,6 +22,8 @@ import com.lyra_tarot.lyra.model.User;
 @RequestMapping("auth")
 public class AuthenticationController {
 
+    private final UserService userService;
+
     @Autowired
     private AuthenticationManager authenticationManager;
 
@@ -29,6 +32,10 @@ public class AuthenticationController {
 
     @Autowired
     private TokenService tokenService;
+
+    AuthenticationController(UserService userService) {
+        this.userService = userService;
+    }
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody @Valid AuthenticationDTO data) {
@@ -56,7 +63,7 @@ public class AuthenticationController {
             null 
         );
 
-        this.userRepository.save(newUser);
+        this.userService.salvarUsuario(newUser);
 
         return ResponseEntity.ok().build();
     }

@@ -6,14 +6,10 @@ import com.lyra_tarot.lyra.service.IUserService;
 import com.lyra_tarot.lyra.service.IInterpretationService;
 import com.lyra_tarot.lyra.service.ITarotService;
 import com.lyra_tarot.lyra.service.ILeituraTarotService;
-
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "http://localhost:5173") // URL padrão do Vite/React
@@ -21,9 +17,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/interpretacao")
 @Tag(name = "Interpretação da Carta Tarot do dia", description = "Interpretação personalizada da carta de Tarot sorteada para o dia, baseada no signo do usuário")
 public class InterpretationController {
-
-    @Autowired
-    private IUserService userService;
 
     @Autowired
     private ITarotService tarotService;
@@ -34,21 +27,15 @@ public class InterpretationController {
     @Autowired
     private ILeituraTarotService leituraTarotService;
 
-    @PostMapping("/informarDados")
-        @ApiResponses({
-        @ApiResponse(responseCode = "201", description = "Dados informados com sucesso"),
-        @ApiResponse(responseCode = "400", description = "Algum dado não informado")
-    })
-    public ResponseEntity<String> realizarConsulta(@Valid @RequestBody User user) {
-
-        User usuarioSalvo = userService.salvarUsuario(user);
+    @PostMapping("/carta-do-dia")
+    public ResponseEntity<String> realizarConsulta(@AuthenticationPrincipal User usuarioLogado) {
 
         TarotCard cartaSorteada = tarotService.sortearCarta();
 
-        String leituraFinal = interpretationService.interpretarCartaDoDia(usuarioSalvo, cartaSorteada);
+        String leituraFinal = interpretationService.interpretarCartaDoDia(usuarioLogado, cartaSorteada);
 
-        leituraTarotService.salvarLeitura(usuarioSalvo, cartaSorteada, leituraFinal);
+        leituraTarotService.salvarLeitura(usuarioLogado, cartaSorteada, leituraFinal);
 
-        return ResponseEntity.status(201).body(leituraFinal);
+        return ResponseEntity.status(200).body(leituraFinal);
     }
 }
