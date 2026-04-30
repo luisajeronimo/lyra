@@ -1,6 +1,7 @@
 package com.lyra_tarot.lyra.service;
 
 import com.google.genai.types.GenerateContentResponse;
+import com.lyra_tarot.lyra.config.exception.IntegracaoGeminiException;
 import com.lyra_tarot.lyra.model.TarotCard;
 import com.lyra_tarot.lyra.model.User;
 
@@ -50,13 +51,13 @@ public class InterpretationService implements IInterpretationService {
             user.getSigno()
         );
 
-        // Chamada para o modelo Gemini 
-        GenerateContentResponse response = geminiClient.models.generateContent(geminiModel, prompt, null);
-        return response.text();
+            // Chamada para o modelo Gemini 
+            GenerateContentResponse response = geminiClient.models.generateContent(geminiModel, prompt, null);
+            return response.text();
     }
 
     @Recover
     public String recover(Exception e, User user, TarotCard carta) {
-        return "Ocorreu uma interferência nas energias astrais... (Timeout/Erro final: " + e.getMessage() + ")";
+        throw new IntegracaoGeminiException("Ocorreu uma interferência nas energias astrais e o oráculo não pôde responder agora. Tente novamente em alguns instantes.");
     }
 }
