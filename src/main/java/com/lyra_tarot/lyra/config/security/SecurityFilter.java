@@ -11,7 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import com.lyra_tarot.lyra.repository.UserRepository;
+import com.lyra_tarot.lyra.service.IUserService;
 
 @Component
 public class SecurityFilter extends OncePerRequestFilter {
@@ -20,7 +20,7 @@ public class SecurityFilter extends OncePerRequestFilter {
     TokenService tokenService;
 
     @Autowired
-    UserRepository userRepository;
+    IUserService userService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -28,7 +28,7 @@ public class SecurityFilter extends OncePerRequestFilter {
         
         if (token != null) {
             var email = tokenService.validateToken(token); // Valida e extrai o e-mail do token
-            UserDetails user = userRepository.findByEmail(email); // Busca o usuário no banco
+            UserDetails user = userService.findByEmail(email); // Busca o usuário pelo serviço
 
             if (user != null) {
                 // Cria a autenticação para o Spring Security entender que o usuário está logado
