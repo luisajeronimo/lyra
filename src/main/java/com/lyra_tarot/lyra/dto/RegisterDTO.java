@@ -9,13 +9,11 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.lyra_tarot.lyra.model.UserRole;
 
 public record RegisterDTO (
     @NotBlank String nome,
     @NotBlank @Email String email,
     @NotBlank String senha,
-    @NotNull UserRole role,
     @NotBlank String estado,
     @NotBlank String cidade,
     
