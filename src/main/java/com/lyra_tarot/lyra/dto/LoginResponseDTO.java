@@ -1,5 +1,5 @@
 package com.lyra_tarot.lyra.dto;
 
-public record LoginResponseDTO (String token) {
+public record LoginResponseDTO (String token, String nome) {
 
 }

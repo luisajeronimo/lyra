@@ -4,31 +4,25 @@ import com.google.genai.types.GenerateContentResponse;
 import com.lyra_tarot.lyra.config.exception.IntegracaoGeminiException;
 import com.lyra_tarot.lyra.model.TarotCard;
 import com.lyra_tarot.lyra.model.User;
-
-import java.time.format.DateTimeFormatter;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.retry.annotation.Recover;
-
-import java.time.LocalDateTime;
-
 import com.google.genai.Client;
 
 @Service
 public class InterpretationService implements IInterpretationService {
 
-    @Autowired
-    private Client geminiClient;
+    private final Client geminiClient;
+    private final LeituraDoDiaPromptBuilder promptBuilder;
+    private final String geminiModel;
 
-    @Value("${lyra.gemini.model}")
-    private String geminiModel;
-
-    @Value("${lyra.gemini.prompt}")
-    private String promptTemplate;
+    public InterpretationService(Client geminiClient, LeituraDoDiaPromptBuilder promptBuilder, @Value("${lyra.gemini.model}") String geminiModel) {
+        this.geminiClient = geminiClient;
+        this.promptBuilder = promptBuilder;
+        this.geminiModel = geminiModel;
+    }
 
     @Override
     @Retryable(
@@ -37,23 +31,10 @@ public class InterpretationService implements IInterpretationService {
         backoff = @Backoff(delayExpression = "${lyra.gemini.retry.delay}")
     )
     public String interpretarCartaDoDia(User user, TarotCard carta) {
-        // Prompt Engineering
-        String prompt = String.format(
-            promptTemplate,
-            user.getNome(), 
-            user.getSigno(), 
-            LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")), 
-            carta.getNome(), 
-            carta.getArcano(), 
-            carta.getElemento(), 
-            carta.getNumero(),
-            carta.getSignificadoGeral(),
-            user.getSigno()
-        );
+        String promptFinal = promptBuilder.buildPrompt(user, carta);
 
-            // Chamada para o modelo Gemini 
-            GenerateContentResponse response = geminiClient.models.generateContent(geminiModel, prompt, null);
-            return response.text();
+        GenerateContentResponse response = geminiClient.models.generateContent(geminiModel, promptFinal, null);
+        return response.text();
     }
 
     @Recover

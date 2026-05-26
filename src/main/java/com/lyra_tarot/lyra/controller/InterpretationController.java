@@ -5,15 +5,11 @@ import com.lyra_tarot.lyra.model.LeituraTarot;
 import com.lyra_tarot.lyra.model.TarotCard;
 import com.lyra_tarot.lyra.model.User;
 import com.lyra_tarot.lyra.service.IInterpretationService;
-import com.lyra_tarot.lyra.service.ITarotService;
+import com.lyra_tarot.lyra.service.ISorteiaTarotService;
 import com.lyra_tarot.lyra.service.ILeituraTarotService;
-
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-
 import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -25,14 +21,15 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "Interpretação da Carta Tarot do dia", description = "Interpretação personalizada da carta de Tarot sorteada para o dia, baseada no signo do usuário")
 public class InterpretationController {
 
-    @Autowired
-    private ITarotService tarotService;
+    private final ISorteiaTarotService tarotService;
+    private final IInterpretationService interpretationService;
+    private final ILeituraTarotService leituraTarotService;
 
-    @Autowired
-    private IInterpretationService interpretationService;
-
-    @Autowired
-    private ILeituraTarotService leituraTarotService;
+    public InterpretationController(ISorteiaTarotService tarotService, IInterpretationService interpretationService, ILeituraTarotService leituraTarotService) {
+        this.tarotService = tarotService;
+        this.interpretationService = interpretationService;
+        this.leituraTarotService = leituraTarotService;
+    }
 
     @PostMapping("/gerar-leitura-do-dia")
     public ResponseEntity<?> gerarLeituraDoDia(@AuthenticationPrincipal User usuarioLogado) {
