@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Service
-public class TarotService implements ITarotService {
+public class SorteiaTarotService implements ISorteiaTarotService {
 
     @Autowired
     private TarotCardRepository repository;

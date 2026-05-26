@@ -18,8 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -30,6 +29,10 @@ class InterpretationServiceTest {
 
     @Mock
     private Models modelsMock; 
+
+    // 1. Adicionamos o Mock do nosso novo Builder
+    @Mock
+    private LeituraDoDiaPromptBuilder promptBuilder;
 
     @InjectMocks
     private InterpretationService interpretationService;
@@ -51,7 +54,6 @@ class InterpretationServiceTest {
         carta.setSignificadoGeral("Luz.");
 
         ReflectionTestUtils.setField(interpretationService, "geminiModel", "gemini-2.0-flash");
-        ReflectionTestUtils.setField(interpretationService, "promptTemplate", "%s %s %s %s %s %s %s %s %s");
 
         ReflectionTestUtils.setField(geminiClient, "models", modelsMock);
     }
@@ -59,16 +61,22 @@ class InterpretationServiceTest {
     @Test
     @DisplayName("Retorna a interpretação gerada pela IA com sucesso")
     void RetornaInterpretacaoComSucesso() {
+        String promptGeradoPeloBuilder = "Texto simulado do prompt final";
         String respostaEsperada = "Hoje será um dia de esperança e luz.";
+
+        when(promptBuilder.buildPrompt(usuario, carta)).thenReturn(promptGeradoPeloBuilder);
+
         GenerateContentResponse responseMock = mock(GenerateContentResponse.class);
         when(responseMock.text()).thenReturn(respostaEsperada);
-        
-        when(modelsMock.generateContent(anyString(), anyString(), any()))
+
+        when(modelsMock.generateContent(eq("gemini-2.0-flash"), eq(promptGeradoPeloBuilder), isNull()))
                 .thenReturn(responseMock);
 
         String resultado = interpretationService.interpretarCartaDoDia(usuario, carta);
 
         assertEquals(respostaEsperada, resultado);
+        
+        verify(promptBuilder, times(1)).buildPrompt(usuario, carta);
     }
 
     @Test

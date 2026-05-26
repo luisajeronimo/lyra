@@ -7,7 +7,7 @@ import com.lyra_tarot.lyra.model.TarotCard;
 import com.lyra_tarot.lyra.model.User;
 import com.lyra_tarot.lyra.service.IInterpretationService;
 import com.lyra_tarot.lyra.service.ILeituraTarotService;
-import com.lyra_tarot.lyra.service.ITarotService;
+import com.lyra_tarot.lyra.service.ISorteiaTarotService;
 import com.lyra_tarot.lyra.service.IUserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -26,6 +26,7 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import com.lyra_tarot.lyra.repository.UserRepository;
 
 @WebMvcTest(InterpretationController.class)
 @AutoConfigureMockMvc(addFilters = false) 
@@ -35,7 +36,7 @@ class InterpretationControllerTest {
     private MockMvc mockMvc;
 
     @MockitoBean
-    private ITarotService tarotService;
+    private ISorteiaTarotService tarotService;
 
     @MockitoBean
     private IInterpretationService interpretationService;
@@ -50,6 +51,9 @@ class InterpretationControllerTest {
 
     @MockitoBean
     private IUserService userService;
+
+    @MockitoBean
+    private UserRepository userRepository;
 
     @BeforeEach
     void setUp() {

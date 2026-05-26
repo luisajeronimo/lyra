@@ -2,7 +2,7 @@ package com.lyra_tarot.lyra.service;
 
 import com.lyra_tarot.lyra.model.TarotCard;
 import com.lyra_tarot.lyra.repository.TarotCardRepository;
-import com.lyra_tarot.lyra.service.TarotService;
+import com.lyra_tarot.lyra.service.SorteiaTarotService;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -26,7 +26,7 @@ class TarotServiceTest {
     private TarotCardRepository repository;
 
     @InjectMocks
-    private TarotService tarotService; 
+    private SorteiaTarotService tarotService; 
 
     private List<TarotCard> baralhoFalso;
 
