@@ -3,6 +3,7 @@ package com.lyra_tarot.lyra.service;
 import com.lyra_tarot.lyra.model.Arcano;
 import com.lyra_tarot.lyra.model.PosicaoPlaneta;
 import com.lyra_tarot.lyra.model.Signo;
+import com.lyra_tarot.lyra.dto.TarotCardDTO;
 import com.lyra_tarot.lyra.model.TarotCard;
 import com.lyra_tarot.lyra.model.User;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,7 +32,7 @@ class LeituraDoDiaPromptBuilderTest {
     private LeituraDoDiaPromptBuilder promptBuilder;
 
     private User usuario;
-    private TarotCard carta;
+    private TarotCardDTO cartas;
     private String dataDeHoje;
 
     @BeforeEach
@@ -40,11 +41,13 @@ class LeituraDoDiaPromptBuilderTest {
         usuario.setNome("Teste");
         usuario.setSigno(Signo.AQUARIO); 
 
-        carta = new TarotCard();
+        TarotCard carta = new TarotCard();
         carta.setNome("A Estrela");
         carta.setArcano(Arcano.MAIOR);
         carta.setElemento("Ar");
         carta.setNumero(17);
+        
+        cartas = new TarotCardDTO(carta, carta);
 
         dataDeHoje = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
     }
@@ -61,7 +64,7 @@ class LeituraDoDiaPromptBuilderTest {
         when(calculoPosicaoPlanetaService.calcularPosicoesPlanetas())
                 .thenReturn(List.of(sol, mercurio));
 
-        String promptGerado = promptBuilder.buildPrompt(usuario, carta);
+        String promptGerado = promptBuilder.buildPrompt(usuario, cartas);
 
         assertTrue(promptGerado.contains("Nome: Teste"));
         assertTrue(promptGerado.contains(dataDeHoje));
@@ -78,7 +81,7 @@ class LeituraDoDiaPromptBuilderTest {
         when(calculoPosicaoPlanetaService.calcularPosicoesPlanetas())
                 .thenReturn(Collections.emptyList());
 
-        String promptGerado = promptBuilder.buildPrompt(usuario, carta);
+        String promptGerado = promptBuilder.buildPrompt(usuario, cartas);
 
         assertTrue(promptGerado.contains("Nome: Teste"));
         assertTrue(promptGerado.contains("Nome: A Estrela"));

@@ -1,6 +1,7 @@
 package com.lyra_tarot.lyra.service;
 
 import com.lyra_tarot.lyra.model.LeituraTarot;
+import com.lyra_tarot.lyra.dto.TarotCardDTO;
 import com.lyra_tarot.lyra.model.TarotCard;
 import com.lyra_tarot.lyra.model.User;
 import com.lyra_tarot.lyra.repository.LeituraTarotRepository;
@@ -30,7 +31,7 @@ class LeituraTarotServiceTest {
     private LeituraTarotService leituraTarotService;
 
     private User usuario;
-    private TarotCard carta;
+    private TarotCardDTO cartas;
 
     @BeforeEach
     void setUp() {
@@ -38,9 +39,11 @@ class LeituraTarotServiceTest {
         usuario.setId(1L);
         usuario.setNome("TestUser");
 
-        carta = new TarotCard();
+        TarotCard carta = new TarotCard();
         carta.setId(10L);
         carta.setNome("A Estrela");
+        
+        cartas = new TarotCardDTO(carta, carta);
     }
 
     @Test
@@ -75,11 +78,11 @@ class LeituraTarotServiceTest {
 
         String textoInterpretacao = "Hoje será um dia de esperança e luz.";
 
-        LeituraTarot leituraSalva = leituraTarotService.salvarLeitura(usuario, carta, textoInterpretacao);
+        LeituraTarot leituraSalva = leituraTarotService.salvarLeitura(usuario, cartas, textoInterpretacao);
 
         assertNotNull(leituraSalva);
         assertEquals("TestUser", leituraSalva.getUser().getNome());
-        assertEquals("A Estrela", leituraSalva.getCartaTarot().getNome());
+        assertEquals("A Estrela", leituraSalva.getCartaTarotMaior().getNome());
         assertEquals(textoInterpretacao, leituraSalva.getLeitura());
         assertNotNull(leituraSalva.getDataLeitura(), "A data de leitura deve ter sido preenchida");
         

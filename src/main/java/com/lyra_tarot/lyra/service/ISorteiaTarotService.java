@@ -1,6 +1,6 @@
 package com.lyra_tarot.lyra.service;
-import com.lyra_tarot.lyra.model.TarotCard;
+import com.lyra_tarot.lyra.dto.TarotCardDTO;
 
 public interface ISorteiaTarotService {
-        TarotCard sortearCarta();
+        TarotCardDTO sortearCarta();
 }

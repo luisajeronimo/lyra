@@ -15,6 +15,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import com.lyra_tarot.lyra.model.Arcano;
+import com.lyra_tarot.lyra.dto.TarotCardDTO;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -48,20 +50,19 @@ class TarotServiceTest {
     @Test
     @DisplayName("Retorna uma carta quando o banco contém cartas")
     void SorteiaCartaComSucesso() {
-        when(repository.findAll()).thenReturn(baralhoFalso);
+        when(repository.findByArcano(Arcano.MAIOR)).thenReturn(baralhoFalso);
+        when(repository.findByArcano(Arcano.MENOR)).thenReturn(baralhoFalso);
 
-        TarotCard cartaSorteada = tarotService.sortearCarta();
+        TarotCardDTO cartaSorteada = tarotService.sortearCarta();
 
         assertNotNull(cartaSorteada, "A carta sorteada não pode ser nula");
-        assertTrue(baralhoFalso.contains(cartaSorteada), "A carta sorteada tem que pertencer ao baralho disponível");
-
-        verify(repository, times(1)).findAll();
+        assertTrue(baralhoFalso.contains(cartaSorteada.arcanoMaior()), "A carta sorteada tem que pertencer ao baralho disponível");
     }
 
     @Test
     @DisplayName("Lança exceção se tentar sortear mas o banco estiver vazio")
     void SorteiaCartaQuandoBancoVazio() {
-        when(repository.findAll()).thenReturn(Collections.emptyList());
+        when(repository.findByArcano(Arcano.MAIOR)).thenReturn(Collections.emptyList());
 
         assertThrows(RuntimeException.class, () -> {
             tarotService.sortearCarta();
