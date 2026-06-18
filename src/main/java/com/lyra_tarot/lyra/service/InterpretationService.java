@@ -2,7 +2,7 @@ package com.lyra_tarot.lyra.service;
 
 import com.google.genai.types.GenerateContentResponse;
 import com.lyra_tarot.lyra.config.exception.IntegracaoGeminiException;
-import com.lyra_tarot.lyra.model.TarotCard;
+import com.lyra_tarot.lyra.dto.TarotCardDTO;
 import com.lyra_tarot.lyra.model.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -30,15 +30,15 @@ public class InterpretationService implements IInterpretationService {
         maxAttemptsExpression = "${lyra.gemini.retry.maxAttempts}",
         backoff = @Backoff(delayExpression = "${lyra.gemini.retry.delay}")
     )
-    public String interpretarCartaDoDia(User user, TarotCard carta) {
-        String promptFinal = promptBuilder.buildPrompt(user, carta);
+    public String interpretarCartaDoDia(User user, TarotCardDTO cartas) {
+        String promptFinal = promptBuilder.buildPrompt(user, cartas);
 
         GenerateContentResponse response = geminiClient.models.generateContent(geminiModel, promptFinal, null);
         return response.text();
     }
 
     @Recover
-    public String recover(Exception e, User user, TarotCard carta) {
+    public String recover(Exception e, User user, TarotCardDTO cartas) {
         throw new IntegracaoGeminiException("Ocorreu uma interferência nas energias astrais e o oráculo não pôde responder agora. Tente novamente em alguns instantes.");
     }
 }

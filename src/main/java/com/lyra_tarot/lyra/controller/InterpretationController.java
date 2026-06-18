@@ -1,8 +1,8 @@
 package com.lyra_tarot.lyra.controller;
 
 import com.lyra_tarot.lyra.dto.LeituraTarotResponseDTO;
+import com.lyra_tarot.lyra.dto.TarotCardDTO;
 import com.lyra_tarot.lyra.model.LeituraTarot;
-import com.lyra_tarot.lyra.model.TarotCard;
 import com.lyra_tarot.lyra.model.User;
 import com.lyra_tarot.lyra.service.IInterpretationService;
 import com.lyra_tarot.lyra.service.ISorteiaTarotService;
@@ -38,7 +38,7 @@ public class InterpretationController {
             return ResponseEntity.badRequest().body("Você já tirou sua carta hoje!");
         }
 
-        TarotCard cartaSorteada = tarotService.sortearCarta();
+        TarotCardDTO cartaSorteada = tarotService.sortearCarta();
         String leituraFinal = interpretationService.interpretarCartaDoDia(usuarioLogado, cartaSorteada);
         
         leituraTarotService.salvarLeitura(usuarioLogado, cartaSorteada, leituraFinal);

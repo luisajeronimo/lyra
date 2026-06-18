@@ -1,6 +1,9 @@
 package com.lyra_tarot.lyra.model;
 
 import java.time.LocalDateTime;
+
+import com.lyra_tarot.lyra.model.TarotCard;
+
 import java.time.LocalDate;
 
 import jakarta.persistence.Column;
@@ -28,8 +31,12 @@ public class LeituraTarot {
     private String leitura; 
 
     @ManyToOne
-    @JoinColumn(name = "carta_tarot_id", nullable = false)
-    private TarotCard cartaTarot;
+    @JoinColumn(name = "carta_tarot_maior_id", nullable = true)
+    private TarotCard cartaTarotMaior;
+
+    @ManyToOne
+    @JoinColumn(name = "carta_tarot_menor_id", nullable = true)
+    private TarotCard cartaTarotMenor;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)

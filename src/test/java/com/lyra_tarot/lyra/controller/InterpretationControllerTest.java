@@ -3,6 +3,7 @@ package com.lyra_tarot.lyra.controller;
 import com.lyra_tarot.lyra.config.security.TokenService;
 import com.lyra_tarot.lyra.model.LeituraTarot;
 import com.lyra_tarot.lyra.model.Signo;
+import com.lyra_tarot.lyra.dto.TarotCardDTO;
 import com.lyra_tarot.lyra.model.TarotCard;
 import com.lyra_tarot.lyra.model.User;
 import com.lyra_tarot.lyra.service.IInterpretationService;
@@ -67,7 +68,7 @@ class InterpretationControllerTest {
     void GeraLeituraComSucesso() throws Exception {
         // Arrange
         when(leituraTarotService.verificarLeituraDoDia(any())).thenReturn(false);
-        when(tarotService.sortearCarta()).thenReturn(new TarotCard());
+        when(tarotService.sortearCarta()).thenReturn(new TarotCardDTO(new TarotCard(), new TarotCard()));
         when(interpretationService.interpretarCartaDoDia(any(), any())).thenReturn("Interpretação de teste");
 
         // Act & Assert
@@ -107,14 +108,15 @@ class InterpretationControllerTest {
         leitura.setLeitura("Hoje será um dia de esperança e luz.");
         leitura.setDataLeitura(LocalDateTime.now()); 
         leitura.setUser(user);
-        leitura.setCartaTarot(carta);
+        leitura.setCartaTarotMaior(carta);
+        leitura.setCartaTarotMenor(carta);
 
         when(leituraTarotService.buscarLeituraDeHoje(any())).thenReturn(Optional.of(leitura));
 
         mockMvc.perform(get("/api/interpretacao/leitura-de-hoje"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1))
-                .andExpect(jsonPath("$.nomeCarta").value("A Estrela"))
+                .andExpect(jsonPath("$.nomeCarta").value("A Estrela e A Estrela"))
                 .andExpect(jsonPath("$.leituraTexto").value("Hoje será um dia de esperança e luz."))
                 .andExpect(jsonPath("$.signo").value("AQUARIO"));
     }

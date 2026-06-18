@@ -1,7 +1,8 @@
 package com.lyra_tarot.lyra.service;
 
+import com.lyra_tarot.lyra.dto.TarotCardDTO;
 import com.lyra_tarot.lyra.model.LeituraTarot;
-import com.lyra_tarot.lyra.model.TarotCard;
+import com.lyra_tarot.lyra.dto.TarotCardDTO;
 import com.lyra_tarot.lyra.model.User;
 import com.lyra_tarot.lyra.repository.LeituraTarotRepository;
 
@@ -21,10 +22,11 @@ public class LeituraTarotService implements ILeituraTarotService {
     private LeituraTarotRepository repository;
 
     @Override
-    public LeituraTarot salvarLeitura(User user, TarotCard carta, String leituraTexto) {
+    public LeituraTarot salvarLeitura(User user, TarotCardDTO cartas, String leituraTexto) {
         LeituraTarot novaLeitura = new LeituraTarot();
         novaLeitura.setUser(user);
-        novaLeitura.setCartaTarot(carta);
+        novaLeitura.setCartaTarotMaior(cartas.arcanoMaior());
+        novaLeitura.setCartaTarotMenor(cartas.arcanoMenor());
         novaLeitura.setLeitura(leituraTexto);
         novaLeitura.setDataNascimentoUser(user.getDataNascimento());
         

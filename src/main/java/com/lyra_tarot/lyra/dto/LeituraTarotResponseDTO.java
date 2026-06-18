@@ -17,8 +17,8 @@ public record LeituraTarotResponseDTO(
     public LeituraTarotResponseDTO(LeituraTarot leitura) {
         this(
             leitura.getId(),
-            leitura.getCartaTarot().getNome(),
-            leitura.getCartaTarot().getImagemUrl(),
+            leitura.getCartaTarotMaior().getNome() + " e " + leitura.getCartaTarotMenor().getNome(),
+            leitura.getCartaTarotMaior().getImagemUrl(),
             leitura.getLeitura(),
             leitura.getDataLeitura(),
             leitura.getUser().getSigno()
