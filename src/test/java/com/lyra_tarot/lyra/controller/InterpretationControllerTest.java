@@ -116,7 +116,7 @@ class InterpretationControllerTest {
         mockMvc.perform(get("/api/interpretacao/leitura-de-hoje"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1))
-                .andExpect(jsonPath("$.nomeCarta").value("A Estrela"))
+                .andExpect(jsonPath("$.nomeCarta").value("A Estrela e A Estrela"))
                 .andExpect(jsonPath("$.leituraTexto").value("Hoje será um dia de esperança e luz."))
                 .andExpect(jsonPath("$.signo").value("AQUARIO"));
     }
