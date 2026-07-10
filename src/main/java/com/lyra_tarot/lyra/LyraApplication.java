@@ -12,7 +12,7 @@ import jakarta.annotation.PostConstruct;
 @EnableRetry
 public class LyraApplication {
 
-	public static void main(String[] args) {
+    public static void main(String[] args) {
 		SpringApplication.run(LyraApplication.class, args);
 	}
 
