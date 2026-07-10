@@ -36,7 +36,7 @@ INSERT IGNORE INTO tb_cartas (id, nome, numero, elemento, imagem_url, arcano, si
 (33, 'Pajem de Paus', 11, 'Fogo', 'pajem-de-paus.jpg', 'MENOR', 'Entusiasmo, exploração, descoberta, espírito livre e novas ideias.'),
 (34, 'Cavaleiro de Paus', 12, 'Fogo', 'cavaleiro-de-paus.jpg', 'MENOR', 'Energia, paixão, impulsividade, aventura e ação rápida.'),
 (35, 'Rainha de Paus', 13, 'Fogo', 'rainha-de-paus.jpg', 'MENOR', 'Coragem, confiança, independência, determinação e calor humano.'),
-(36, 'Rei de Paus', 14, 'Fogo', 'rei-de-paus.jpg',('Liderança, visão, empreendedorismo, honra e carisma.'),
+(36, 'Rei de Paus', 14, 'Fogo', 'rei-de-paus.jpg', 'MENOR', 'Liderança, visão, empreendedorismo, honra e carisma.'),
 -- NAIPE DE COPAS (ÁGUA)
 (37, 'Ás de Copas', 1, 'Água', 'as-de-copas.jpg', 'MENOR', 'Amor, novas emoções, intuição, compaixão e fluidez espiritual.'),
 (38, 'Dois de Copas', 2, 'Água', '2-de-copas.jpg', 'MENOR', 'Parceria, união, amor mútuo, atração e relacionamentos harmoniosos.'),
